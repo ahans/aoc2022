@@ -1,0 +1,6 @@
+load(":day01.bzl", "day01_repo")
+
+day01_repo(
+    name = "day01",
+    src = "//:01.txt",
+)
