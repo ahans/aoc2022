@@ -1,29 +1,16 @@
-#include <numeric>
-#include <iostream>
 #include <sstream>
+#include <iostream>
 
 int main()
 {
-    std::stringstream buffer;
-    buffer << std::cin.rdbuf();
-    std::string const s{buffer.str()};
-    using Line = char[4];
-    auto const result{std::transform_reduce(
-        reinterpret_cast<Line const *>(s.c_str()),
-        reinterpret_cast<Line const *>(s.c_str() + s.length()),
-        std::make_pair(0, 0),
-        [](auto const a, auto const b)
-        {
-            return std::make_pair(a.first + b.first, a.second + b.second);
-        },
-        [](auto const line)
-        {
-            auto const a{line[0] - 'A'};
-            auto const b{line[2] - 'X'};
-            return std::make_pair(
-                3 * ((b - a + 4) % 3) + b + 1,
-                (a + b + 2) % 3 + 3 * b + 1);
-        })};
-    std::cout << result.first << std::endl;
-    std::cout << result.second << std::endl;
+    int s0{};
+    int s1{};
+    char line[4];
+    while (std::cin.read(line, 4))
+    {
+        s0 += 3 * ((-line[0] + line[2] - 1) % 3) + line[2] - 87;
+        s1 += (line[0] + line[2] - 1) % 3 + 3 * line[2] - 263;
+    }
+    std::cout << s0 << '\n'
+              << s1 << '\n';
 }
