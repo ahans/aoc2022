@@ -9,11 +9,13 @@
 #include <string>
 #include <vector>
 
-int main()
+int main(int argc, char** argv)
 {
+    int num_trials{1};
+    if (argc > 1) num_trials = std::atoi(argv[1]);
     auto begin{std::chrono::high_resolution_clock::now()};
 
-    for (auto t{0}; t < 1000; ++t)
+    for (auto t{0}; t < num_trials; ++t)
     {
         std::ifstream fin{"../inputs/04.txt"};
         int p1{}, p2{};
@@ -66,5 +68,5 @@ int main()
         std::cout << p1 << " " << p2 << "\n";
     }
     auto end{std::chrono::high_resolution_clock::now()};
-    std::cout << "took " << (end - begin).count() << std::endl;
+    std::cerr << "took " << (end - begin).count() << std::endl;
 }
