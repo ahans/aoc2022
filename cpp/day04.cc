@@ -15,10 +15,11 @@ int main(int argc, char** argv) {
     for (auto t{0}; t < num_trials; ++t) {
         std::ifstream fin{"../inputs/04.txt"};
         int p1{}, p2{};
-	std::array<std::array<char, 64>, 4> a;
+        std::array<std::array<char, 64>, 4> a;
         auto const process_batch = [&a, &p1, &p2] {
-	    std::array<Vec32c, 4> aa;
-	    for (auto k{0}; k < 4; ++k) aa[k].load(a[k].data());
+            std::array<Vec32c, 4> aa;
+            for (auto k{0}; k < 4; ++k)
+                aa[k].load(a[k].data());
             p1 += horizontal_count(aa[0] <= aa[2] && aa[3] <= aa[1] || aa[2] <= aa[0] && aa[1] <= aa[3]);
             p2 += horizontal_count(!(aa[1] < aa[2] || aa[3] < aa[0]));
         };

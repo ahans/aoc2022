@@ -1,5 +1,7 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
-ColumnLimit: 100
+ColumnLimit: 120
 SortIncludes: false
 AllowShortIfStatementsOnASingleLine: true
+PointerAlignment: Left
+ReferenceAlignment: Left
