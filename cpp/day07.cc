@@ -9,7 +9,9 @@ int main(int argc, char** argv) {
     for (auto t{0}; t < num_trials; ++t) {
         std::ifstream in{"../inputs/07.txt"};
         std::vector<int> path{};
+        path.reserve(32);
         std::vector<int> dir_sizes{};
+        path.reserve(256);
 
         auto p1{0};
         auto total{0};
@@ -28,12 +30,21 @@ int main(int argc, char** argv) {
         for (std::string line; std::getline(in, line);) {
             if (line[0] == '$') {
                 if (line[2] != 'c') continue; // we're only interested in `cd` commands
-                if (line[5] == '.') up();
-                else path.push_back(0);
-            } else if (line[0] != 'd') path.back() += ::atoi(line.c_str());
+                if (line[5] == '.')
+                    up();
+                else
+                    path.push_back(0);
+            } else if (line[0] != 'd') {
+                int num{0};
+                // this is a lot faster than std::atoi
+                for (auto i{0}; line[i] != ' '; ++i)
+                    num = num * 10 + line[i] - '0';
+                path.back() += num;
+            }
         }
 
-        while (!std::empty(path)) up();
+        while (!std::empty(path))
+            up();
 
         auto p2{30000000};
         for (auto const& v : dir_sizes) {
