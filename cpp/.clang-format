@@ -1,8 +1,10 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
 ColumnLimit: 120
-SortIncludes: false
-AllowShortIfStatementsOnASingleLine: AllIfsAndElse
-AllowShortBlocksOnASingleLine: Always
+SortIncludes: Never
+AllowShortIfStatementsOnASingleLine: Never
 PointerAlignment: Left
 ReferenceAlignment: Left
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
+AlwaysBreakTemplateDeclarations: Yes

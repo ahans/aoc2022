@@ -19,17 +19,23 @@ int main(int argc, char** argv) {
         auto const up{[&path, &dir_sizes, &p1, &total]() {
             dir_sizes.push_back(path.back());
             path.pop_back();
-            if (!path.empty()) { path.back() += dir_sizes.back(); }
+            if (!path.empty()) {
+                path.back() += dir_sizes.back();
+            }
 
-            if (dir_sizes.back() < 100000) p1 += dir_sizes.back();
+            if (dir_sizes.back() < 100000)
+                p1 += dir_sizes.back();
             total = std::max(total, dir_sizes.back());
         }};
 
         for (std::string line; std::getline(in, line);) {
             if (line[0] == '$') {
-                if (line[2] != 'c') continue; // we're only interested in `cd` commands
-                if (line[5] == '.') up();
-                else path.push_back(0);
+                if (line[2] != 'c')
+                    continue; // we're only interested in `cd` commands
+                if (line[5] == '.')
+                    up();
+                else
+                    path.push_back(0);
             } else if (line[0] != 'd') {
                 int num{0};
                 // this is a lot faster than std::atoi
@@ -44,7 +50,8 @@ int main(int argc, char** argv) {
 
         auto p2{30000000};
         for (auto const& v : dir_sizes) {
-            if (v >= (total - 40000000)) p2 = std::min(p2, v);
+            if (v >= (total - 40000000))
+                p2 = std::min(p2, v);
         }
         std::cout << p1 << std::endl;
         std::cout << p2 << std::endl;
