@@ -2,6 +2,7 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#include <chrono>
 
 int main() {
     std::ifstream in{"../inputs/08.txt"};
@@ -13,6 +14,8 @@ int main() {
         std::transform(line.begin(), line.end(), grid[i++].begin(), [](char c) { return c - '0'; });
     }
 
+    auto begin = std::chrono::high_resolution_clock::now();
+
     int p1{}, p2{};
     for (auto y{0}; y < height; ++y) {
         for (auto x{0}; x < width; ++x) {
@@ -21,7 +24,8 @@ int main() {
             int cnt{};
             bool visible0{true};
             for (auto xx = x - 1; xx >= 0; --xx) {
-                if (x > 0) cnt++;
+                if (x > 0)
+                    cnt++;
                 if (grid[y][xx] >= grid[y][x]) {
                     visible0 = false;
                     break;
@@ -33,7 +37,8 @@ int main() {
             // right
             bool visible1 = true;
             for (auto xx = x + 1; xx < width; ++xx) {
-                if (x + 1 < width) ++cnt;
+                if (x + 1 < width)
+                    ++cnt;
                 if (grid[y][xx] >= grid[y][x]) {
                     visible1 = false;
                     break;
@@ -46,7 +51,8 @@ int main() {
             // up
             bool visible2 = true;
             for (auto yy = y - 1; yy >= 0; --yy) {
-                if (y > 0) ++cnt;
+                if (y > 0)
+                    ++cnt;
                 if (grid[yy][x] >= grid[y][x]) {
                     visible2 = false;
                     break;
@@ -59,7 +65,8 @@ int main() {
             // down
             bool visible3 = true;
             for (auto yy = y + 1; yy < height; ++yy) {
-                if (y + 1 < height) ++cnt;
+                if (y + 1 < height)
+                    ++cnt;
                 if (grid[yy][x] >= grid[y][x]) {
                     visible3 = false;
                     break;
@@ -76,4 +83,6 @@ int main() {
     }
     std::cout << p1 << std::endl;
     std::cout << p2 << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "took " << (end - begin).count() << std::endl;
 }
