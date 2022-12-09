@@ -65,12 +65,8 @@ template <typename T, size_t min_length, size_t max_length>
 size_t parse(char const* s, T& v) {
     size_t i{};
     v = 0;
-    for (; i < min_length && '0' <= s[i] && s[i] <= '9'; ++i) {
+    for (; i < std::max(min_length, max_length) && '0' <= s[i] && s[i] <= '9'; ++i) {
         v = T{10} * v + static_cast<T>(s[i] - '0');
-    }
-    while (i < max_length && '0' <= s[i] && s[i] <= '9') {
-        v = T{10} * v + static_cast<T>(s[i] - '0');
-        ++i;
     }
     return i;
 }
