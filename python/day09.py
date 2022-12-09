@@ -5,7 +5,7 @@ for l in (2, 10):
     knots = [[0, 0] for _ in range(l)]
     pos = set()
     pos.add((0, 0))
-    for line in open("input.txt").readlines():
+    for line in open("../inputs/09.txt").readlines():
         direction, num = line.split()
         num = int(num)
         knots[0][0] += num * DIRS[direction][0]
