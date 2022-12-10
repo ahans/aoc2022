@@ -7,7 +7,9 @@
 #include <sstream>
 #include <string>
 #include <utility>
+#include <iostream>
 #include <vector>
+#include <type_traits>
 
 struct Result {
     std::string part_1;
@@ -65,8 +67,16 @@ template <typename T, size_t min_length, size_t max_length>
 size_t parse(char const* s, T& v) {
     size_t i{};
     v = 0;
+    T sgn{1};
+    if constexpr (std::is_signed_v<T>) {
+        if (s[i] == '-') {
+            sgn = -1;
+            ++i;
+        }
+    }
     for (; i < std::max(min_length, max_length) && '0' <= s[i] && s[i] <= '9'; ++i) {
         v = T{10} * v + static_cast<T>(s[i] - '0');
     }
+    v = v * sgn;
     return i;
 }
