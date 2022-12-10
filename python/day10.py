@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.11
 
+
 class VM:
     def __init__(self, instructions):
         self.x = self._x = 1
@@ -23,11 +24,13 @@ class VM:
 
 vm = VM(l.strip() for l in open("../inputs/10.txt").readlines())
 p1 = 0
-p2 = [['.'] * 40 for _ in range(6)]
+p2 = ""
 while vm.step():
-    p1 += vm.cycle * vm.x if vm.cycle in (20, 60, 100, 140, 180, 220)  else 0
-    y, x = (vm.cycle - 1) // 40, (vm.cycle - 1) % 40
-    p2[y][x] = '#' if x in range(vm.x - 1, vm.x + 2) else ' '
+    p1 += vm.cycle * vm.x if (vm.cycle - 20) % 40 == 0 else 0
+    x = (vm.cycle - 1) % 40
+    p2 += "#" if x in range(vm.x - 1, vm.x + 2) else " "
+    if (x + 1) % 40 == 0:
+        p2 += "\n"
 
 print(p1)
-print('\n'.join(''.join(r) for r in p2))
+print(p2)
