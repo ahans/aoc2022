@@ -1,10 +1,12 @@
+#include "../common.hh"
+
 #include <algorithm>
 #include <array>
 #include <fstream>
 #include <iostream>
 #include <chrono>
 
-int main() {
+Result day08() {
     std::ifstream in{"../inputs/08.txt"};
     std::array<std::array<char, 99>, 99> grid{};
     constexpr auto width = 99;
@@ -13,8 +15,6 @@ int main() {
     for (std::string line; std::getline(in, line);) {
         std::transform(line.begin(), line.end(), grid[i++].begin(), [](char c) { return c - '0'; });
     }
-
-    auto begin = std::chrono::high_resolution_clock::now();
 
     int p1{}, p2{};
     for (auto y{0}; y < height; ++y) {
@@ -81,8 +81,7 @@ int main() {
             }
         }
     }
-    std::cout << p1 << std::endl;
-    std::cout << p2 << std::endl;
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "took " << (end - begin).count() << std::endl;
+    return {std::to_string(p1), std::to_string(p2)};
 }
+
+REGISTER_FUNC_FOR_DAY(8, day08)

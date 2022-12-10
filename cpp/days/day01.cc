@@ -23,8 +23,8 @@ Result day01() {
             cur += val;
         }
     }
-    std::nth_element(std::begin(cals), std::begin(cals) + 3, std::end(cals), std::greater{});
-    return {std::to_string(std::max(std::max(cals[0], cals[1]), cals[2])), std::to_string(cals[0] + cals[1] + cals[2])};
+    std::partial_sort(std::begin(cals), std::begin(cals) + 3, std::end(cals), std::greater{});
+    return {std::to_string(cals[2]), std::to_string(cals[0] + cals[1] + cals[2])};
 }
 
 REGISTER_FUNC_FOR_DAY(1, day01)

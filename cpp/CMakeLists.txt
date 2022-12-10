@@ -23,15 +23,18 @@ FetchContent_MakeAvailable(fmt vectorclass)
 include_directories(${vectorclass_SOURCE_DIR})
 
 add_executable(
-    main
-    common.cc
-    main.cc
-    days/day01.cc
-    days/day02.cc
-    days/day03.cc
-    days/day04.cc
-    # days/day06.cc
-    # days/day07.cc
+  main
+  common.cc
+  main.cc
+  days/day01.cc
+  days/day02.cc
+  days/day03.cc
+  days/day04.cc
+  days/day05.cc
+  days/day06.cc
+  days/day07.cc
+  days/day08.cc
+  days/day10.cc
 )
 target_compile_features(main PUBLIC cxx_std_17)
 target_link_libraries(main PRIVATE fmt::fmt)
