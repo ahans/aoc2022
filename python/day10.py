@@ -12,14 +12,12 @@ class VM:
             self.cycles_left -= 1
         else:
             self.x = self._x
-            try:
-                match next(self.instructions).split():
-                    case "noop", _: pass
-                    case "addx", num:
-                        self._x += int(num)
-                        self.cycles_left = 1
-            except StopIteration:
-                return False
+            match next(self.instructions, ("eof")).split():
+                case ["noop"]: pass
+                case ["addx", num]:
+                    self._x += int(num)
+                    self.cycles_left = 1
+                case ["eof"]: return False
         return True
 
 
