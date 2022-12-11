@@ -24,11 +24,30 @@ for id, t in enumerate(open("../inputs/11.txt").read().split("\n\n")):
     n *= divisable_by
     monkeys.append(Monkey(items, op, divisable_by, (to_if_true, to_if_false)))
 
-print(n)
-for num_rounds in (20,):
+for num_rounds in (20, 10000):
     counts = [0] * len(monkeys)
-    part_monkeys = deepcopy(monkeys)
     pp = (lambda x: x // 3) if num_rounds == 20 else (lambda x: x % n)
+
+    items = []
+    for id, m in enumerate(monkeys):
+        for item in m.items:
+            items.append((item, id))
+
+    for item, monkey_id in items:
+        round = 0
+        # for _ in range(num_rounds):
+        while True:
+            counts[monkey_id] += 1
+            m = monkeys[monkey_id]
+            new = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
+            new_monkey_id = m.to[new % m.divisable_by != 0]
+            again_in_same_round = new_monkey_id > monkey_id
+            monkey_id = new_monkey_id
+            item = new
+            if not again_in_same_round:
+                break
+
+    part_monkeys = deepcopy(monkeys)
     for i in range(num_rounds):
         for monkey_id, m in enumerate(part_monkeys):
             while m.items:
@@ -36,6 +55,5 @@ for num_rounds in (20,):
                 item = m.items.pop()
                 new = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
                 part_monkeys[m.to[new % m.divisable_by != 0]].items.append(new)
-
     counts.sort(reverse=True)
     print(counts[0] * counts[1])
