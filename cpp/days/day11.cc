@@ -11,11 +11,11 @@
 
 Result day11() {
     std::ifstream in{"../inputs/11.txt"};
-    std::vector<std::vector<int64_t>> items;
-    std::vector<std::function<int64_t(int64_t)>> ops;
-    std::vector<int64_t> mods;
-    std::vector<std::array<int64_t, 2>> tos;
-    int64_t n{1};
+    std::vector<std::vector<uint64_t>> items;
+    std::vector<std::function<uint64_t(uint64_t)>> ops;
+    std::vector<uint64_t> mods;
+    std::vector<std::array<uint64_t, 2>> tos;
+    uint64_t n{1};
     for (std::string line; std::getline(in, line);) {
         if (line[0] == 'M')
             continue;
@@ -23,27 +23,27 @@ Result day11() {
             char const op = line[23];
             if (op == '+') {
                 if (line[25] == 'o') {
-                    auto f = [](int64_t x) { return x + x; };
+                    auto f = [](uint64_t x) { return x + x; };
                     ops.push_back(std::move(f));
                 } else {
-                    int64_t n = std::atoi(line.substr(25).c_str());
-                    auto f = [n](int64_t x) { return x + n; };
+                    uint64_t n = std::atoi(line.substr(25).c_str());
+                    auto f = [n](uint64_t x) { return x + n; };
                     ops.push_back(std::move(f));
                 }
             } else {
                 if (line[25] == 'o') {
-                    auto f = [](int64_t x) { return x * x; };
+                    auto f = [](uint64_t x) { return x * x; };
                     ops.push_back(std::move(f));
                 } else {
-                    int64_t n = std::atoi(line.substr(25).c_str());
-                    auto f = [n](int64_t x) { return x * n; };
+                    uint64_t n = std::atoi(line.substr(25).c_str());
+                    auto f = [n](uint64_t x) { return x * n; };
                     ops.push_back(std::move(f));
                 }
             }
             continue;
         }
         if (line[2] == 'S') {
-            std::vector<int64_t> its;
+            std::vector<uint64_t> its;
             for (auto p = 18U; p < line.length(); p += 4) {
                 its.push_back(std::atoi(line.substr(p, p + 4).c_str()));
             }
@@ -66,7 +66,7 @@ Result day11() {
     auto items_bak = items;
     Result r{};
     {
-        std::array<int64_t, 8> counts{};
+        std::array<uint64_t, 8> counts{};
         for (auto round{0}; round < 20; ++round) {
             for (auto i{0}; i < 8; ++i) {
                 for (auto const& item : items[i]) {
@@ -86,12 +86,12 @@ Result day11() {
     }
     items = std::move(items_bak);
     {
-        std::array<int64_t, 8> counts{};
+        std::array<uint64_t, 8> counts{};
         for (auto round{0}; round < 10000; ++round) {
             for (auto i{0}; i < 8; ++i) {
                 for (auto const& item : items[i]) {
                     ++counts[i];
-                    auto ni = ops[i](item) % n;
+                    auto ni = ops[i](item) % 223092870;
                     if (ni % mods[i] == 0) {
                         items[tos[i][0]].push_back(ni);
                     } else {
