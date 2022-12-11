@@ -26,7 +26,7 @@ for id, t in enumerate(open("../inputs/11.txt").read().split("\n\n")):
 
 for num_rounds in (20, 10000):
     counts = [0] * len(monkeys)
-    pp = (lambda x: x // 3) if num_rounds == 20 else (lambda x: x % n)
+    pp = (lambda x: x // 3) if num_rounds == 20 else (lambda x: x % 223092870)
 
     items = []
     for id, m in enumerate(monkeys):
@@ -34,26 +34,26 @@ for num_rounds in (20, 10000):
             items.append((item, id))
 
     for item, monkey_id in items:
-        round = 0
-        # for _ in range(num_rounds):
-        while True:
+        #for _ in range(num_rounds):
+        rounds = 0
+        while rounds < num_rounds:
             counts[monkey_id] += 1
             m = monkeys[monkey_id]
-            new = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
-            new_monkey_id = m.to[new % m.divisable_by != 0]
-            again_in_same_round = new_monkey_id > monkey_id
+            item = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
+            new_monkey_id = m.to[item % m.divisable_by != 0]
+            if new_monkey_id <= monkey_id:
+                rounds += 1
             monkey_id = new_monkey_id
-            item = new
-            if not again_in_same_round:
-                break
 
-    part_monkeys = deepcopy(monkeys)
-    for i in range(num_rounds):
-        for monkey_id, m in enumerate(part_monkeys):
-            while m.items:
-                counts[monkey_id] += 1
-                item = m.items.pop()
-                new = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
-                part_monkeys[m.to[new % m.divisable_by != 0]].items.append(new)
+    # part_monkeys = deepcopy(monkeys)
+    # for i in range(num_rounds):
+    #     for monkey_id, m in enumerate(part_monkeys):
+    #         while m.items:
+    #             counts[monkey_id] += 1
+    #             item = m.items.pop()
+    #             new = pp(m.op[0](item, item if m.op[1] == "old" else m.op[1]))
+    #             part_monkeys[m.to[new % m.divisable_by != 0]].items.append(new)
+
+
     counts.sort(reverse=True)
     print(counts[0] * counts[1])
