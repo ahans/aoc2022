@@ -1,6 +1,5 @@
 #include "../common.hh"
 
-#include <limits>
 #include <queue>
 #include <string>
 #include <vector>
@@ -29,12 +28,12 @@ Result day12() {
     }
 
     int p1{};
-    int p2{std::numeric_limits<int>::max()};
+    int p2{};
 
     std::vector<bool> seen(grid.size());
     std::deque<std::pair<int, int>> q;
     q.push_back(std::make_pair(0, end));
-    while (!q.empty()) {
+    while (true) {
         auto const [l, cur]{q.front()};
         q.pop_front();
         if (seen[cur]) {
@@ -42,10 +41,12 @@ Result day12() {
         }
         seen[cur] = true;
         if (grid[cur] == 'a') {
-            if (cur == start) {
+            if (p2 == 0) {
+                p2 = l;
+            } else if (cur == start) {
                 p1 = l;
+                break;
             }
-            p2 = std::min(p2, l);
         }
         for (auto d : {1, -1, -w, w}) {
             auto const next{cur + d};
