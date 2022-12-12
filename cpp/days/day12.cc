@@ -1,8 +1,9 @@
 #include "../common.hh"
 
+#include <limits>
+#include <queue>
 #include <string>
 #include <vector>
-#include <queue>
 
 Result day12() {
     std::ifstream in{"../inputs/12.txt"};
@@ -28,7 +29,7 @@ Result day12() {
     }
 
     int p1{};
-    int p2{};
+    int p2{std::numeric_limits<int>::max()};
 
     std::vector<bool> seen(grid.size());
     std::deque<std::pair<int, int>> q;
@@ -44,7 +45,7 @@ Result day12() {
             if (cur == start) {
                 p1 = l;
             }
-            p2 = p2 == 0 ? l : std::min(p2, l);
+            p2 = std::min(p2, l);
         }
         for (auto d : {1, -1, -w, w}) {
             auto const next{cur + d};
