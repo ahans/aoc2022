@@ -37,6 +37,7 @@ add_executable(
   days/day10.cc
   days/day11.cc
   days/day12.cc
+  days/day14.cc
 )
 target_compile_features(main PUBLIC cxx_std_17)
 target_link_libraries(main PRIVATE fmt::fmt)
