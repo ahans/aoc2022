@@ -23,8 +23,6 @@ def find_path(start, goal):
     global blizzards
     q = [(l1(start, goal), 0, start, frozendict(blizzards))]
     visited = set()
-    costs = defaultdict(lambda: sys.maxsize)
-    costs[(start, frozendict(blizzards))] = 0
     while q:
         estimated, cost, pos, blizzards = heapq.heappop(q)
         if (pos, blizzards) in visited:
@@ -53,9 +51,7 @@ def find_path(start, goal):
                 continue
             if p in blizzards:
                 continue
-            if costs[(p, blizzards)] > cost + 1:
-                costs[(p, blizzards)] = cost + 1
-                heapq.heappush(q,  (l1(p, goal), cost + 1, p, blizzards))
+            heapq.heappush(q,  (cost + 1 + l1(p, goal), cost + 1, p, blizzards))
 
 
 print(p1 := find_path(start, goal))
