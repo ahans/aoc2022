@@ -1,7 +1,7 @@
 import sys
 import heapq
 from collections import defaultdict
-from frozendict import frozendict
+from math import lcm
 
 
 blizzards = defaultdict(lambda: ())
@@ -15,39 +15,40 @@ for y, l in enumerate(lines):
 
 
 goal = h + 1, w
+m = lcm(h, w)
 start = (0,1)
+
+blizzards_cache = {}
+for t in range(m):
+    blizzards_cache[t] = blizzards
+    new_blizzards = defaultdict(lambda: [])
+    for (by, bx), blizzard_list in blizzards.items():
+        for b in blizzard_list:
+            match b:
+                case "<": new_p = (by, ((bx-1-1) % w) + 1)
+                case ">": new_p = (by, ((bx-1+1) % w) + 1)
+                case "^": new_p = (((by-1-1) % h) + 1, bx)
+                case "v": new_p = (((by-1+1) % h) + 1, bx)
+            new_blizzards[new_p] = (*new_blizzards[new_p], b)
+    blizzards = new_blizzards
 
 
 def find_path(start, goal):
     def l1(a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
     global blizzards
-    blizzard_cache = {}
-    q = [((0, 0), 0, start, frozendict(blizzards))]
+    # blizzard_cache = {}
+    q = [((0, 0), 0, start)]
     visited = set()
     while q:
-        _, cost, pos, blizzards = heapq.heappop(q)
+        _, cost, pos = heapq.heappop(q)
         if pos == goal:
             return cost
-        if (pos, blizzards) in visited:
+        if (pos, cost) in visited:
             continue
-        visited.add((pos, blizzards))
-
-        if cost in blizzard_cache:
-            blizzards = blizzard_cache[cost]
-        else:
-            new_blizzards = defaultdict(lambda: [])
-            for (by, bx), blizzard_list in blizzards.items():
-                for b in blizzard_list:
-                    match b:
-                        case "<": new_p = (by, ((bx-1-1) % w) + 1)
-                        case ">": new_p = (by, ((bx-1+1) % w) + 1)
-                        case "^": new_p = (((by-1-1) % h) + 1, bx)
-                        case "v": new_p = (((by-1+1) % h) + 1, bx)
-                    new_blizzards[new_p] = (*new_blizzards[new_p], b)
-            blizzards = frozendict(new_blizzards)
-            blizzard_cache[cost] = blizzards
+        visited.add((pos, cost))
         y, x = pos
+        blizzards = blizzards_cache[cost + 1]
         # iterate actions
         for ds in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]:
             ny, nx = (p := (y + ds[0], x + ds[1]))
@@ -55,7 +56,7 @@ def find_path(start, goal):
                 continue
             if p in blizzards:
                 continue
-            heapq.heappush(q, (cost + l1(p, goal), cost + 1, p, blizzards))
+            heapq.heappush(q, (cost + 1 + l1(p, goal), cost + 1, p))
 
 
 print(p1 := find_path(start, goal))
