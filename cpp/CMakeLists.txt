@@ -34,10 +34,15 @@ add_executable(
   days/day06.cc
   days/day07.cc
   days/day08.cc
+  days/day09.cc
   days/day10.cc
   days/day11.cc
-  days/day12.cc
+
+  # days/day12.cc
   days/day14.cc
+  days/day18.cc
+
+  days/day25.cc
 )
 target_compile_features(main PUBLIC cxx_std_17)
 target_link_libraries(main PRIVATE fmt::fmt)

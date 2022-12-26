@@ -55,9 +55,9 @@ Result day11() {
             n *= mod;
             mods.push_back(mod);
             std::getline(in, line);
-            int to_true = line.back() - '0';
+            uint64_t to_true = line.back() - '0';
             std::getline(in, line);
-            int to_false = line.back() - '0';
+            uint64_t to_false = line.back() - '0';
             tos.push_back({to_true, to_false});
             continue;
         }
