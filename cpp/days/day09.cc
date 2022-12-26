@@ -26,24 +26,26 @@ Result day09() {
     for (auto i{0UL}; i < std::size(in);) {
         auto const c{in[i]};
         i += 2;
-        int n;
-        i += parse<int, 1, 2>(&in[i], n) + 1;
+        uint32_t n;
+        i += parse<uint32_t, 1, 2>(&in[i], n) + 1;
 
-        for (auto j{0}; j < n; ++j) {
+        auto const d{[c]() {
             switch (c) {
             case 'L':
-                knots.front().x -= 1;
-                break;
+                return Point{-1, 0};
             case 'R':
-                knots.front().x += 1;
-                break;
+                return Point{1, 0};
             case 'U':
-                knots.front().y -= 1;
-                break;
+                return Point{0, -1};
             case 'D':
-                knots.front().y += 1;
+                return Point{0, 1};
             }
+            __builtin_unreachable();
+        }()};
 
+        for (auto j{0U}; j < n; ++j) {
+            knots.front().x += d.x;
+            knots.front().y += d.y;
             for (auto j{1UL}; j < knots.size(); ++j) {
                 auto const xd{knots[j - 1].x - knots[j].x};
                 auto const yd{knots[j - 1].y - knots[j].y};
