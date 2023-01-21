@@ -24,4 +24,3 @@ for l in (2, 10):
                 continue
             break
     print(len(pos))
-

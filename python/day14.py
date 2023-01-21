@@ -20,7 +20,7 @@ def free(x, y, bottom_y=None):
 
 
 def solve(walls, part2 = False):
-    fallen_out_y = None if part2 else max(y for x,y in walls) 
+    fallen_out_y = None if part2 else max(y for x,y in walls)
     bottom_y = max(y for x,y in walls) + 2 if part2 else None
     while True:
         x, y = 500, 0
@@ -38,6 +38,6 @@ def solve(walls, part2 = False):
                 break
             if fallen_out_y and fallen_out_y == y:
                 return len(sand)
-                
+
 print(solve(walls, False))
 print(solve(walls, True))
